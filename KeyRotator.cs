@@ -14,7 +14,6 @@ namespace Prashanth.Function
     {
         private static readonly HttpClient client = new HttpClient();
 
-        // Azure function which runs every 10 minutes to create a new key
         [FunctionName("NewTimerTrigger")]
         public static void Run([TimerTrigger("0 */10 * * * *")]TimerInfo myTimer, ILogger log)
         {
@@ -27,26 +26,27 @@ namespace Prashanth.Function
 
         private static async void CreateNewKeyAsync(string token, ILogger log)
         {
-            try {
-            string myJson = "{'kty': 'RSA','key_size':2048, 'key_ops': [], 'attributes': {}, 'tags': {'tags': { 'purpose': 'unit test', 'test name': 'CreateKeyTest'}}}";
-            using (var client = new HttpClient())
-            {
-                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
-                var response = await client.PostAsync(
-                    "https://prashanthyofficialvault.vault.azure.net/keys/myFirstKey/create?api-version=7.0", 
-                    new StringContent(myJson, Encoding.UTF8, "application/json"));
-            }
-            } catch(Exception ex){
-                log.LogInformation($"There was an issue creating a key: {ex.StackTrace}");
+            try 
+            {            
+                string myJson = "{'kty': 'RSA','key_size':2048, 'key_ops': [], 'attributes': {}, 'tags': {'tags': { 'purpose': 'unit test', 'test name': 'CreateKeyTest'}}}";
+                using (var client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+                    var response = await client.PostAsync(
+                        "https://prashanthyofficialvault.vault.azure.net/keys/myFirstKey/create?api-version=7.0", 
+                        new StringContent(myJson, Encoding.UTF8, "application/json"));
+                }
+            } 
+            catch(Exception ex){
+                log.LogInformation($"Got the secret out of Key Vault: {ex.StackTrace}");
             }
         }
 
-        // Helper method to parse JSON response
+        // Helper method to parse the key vault response
         private static string ParseWebResponse(Stream stream)
         {
             StreamReader readStream = new StreamReader (stream, Encoding.UTF8);
-            var finalString = readStream.ReadToEnd();
-            return finalString;
+            return readStream.ReadToEnd();
         }
 
         // This token is used to authenticate to Key Vault
