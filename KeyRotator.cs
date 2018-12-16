@@ -17,11 +17,16 @@ namespace Prashanth.Function
         [FunctionName("NewTimerTrigger")]
         public static void Run([TimerTrigger("0 */10 * * * *")]TimerInfo myTimer, ILogger log)
         {
+            var token = GetToken();
+            CreateNewKeyAsync(token, log);
+        }
+
+        public static void GetToken()
+        {
             var kvResultObject = GetToken("https://vault.azure.net", "2017-09-01").Result;
             var finalString = ParseWebResponse(kvResultObject.Content.ReadAsStreamAsync().Result);
             dynamic parsedResultFromKeyVault = JsonConvert.DeserializeObject(finalString);
-            string token = parsedResultFromKeyVault.access_token;
-            CreateNewKeyAsync(token, log);
+            return parsedResultFromKeyVault.access_token;
         }
 
         private static async void CreateNewKeyAsync(string token, ILogger log)
