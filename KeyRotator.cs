@@ -15,7 +15,7 @@ namespace Prashanth.Function
         private static readonly HttpClient client = new HttpClient();
 
         [FunctionName("NewTimerTrigger")]
-        public static void Run([TimerTrigger("0 */10 * * * *")]TimerInfo myTimer, ILogger log)
+        public static void Run([TimerTrigger("0 30 9 * Jan Mon")]TimerInfo myTimer, ILogger log)
         {
             var token = GetToken();
             CreateNewKeyAsync(token, log);

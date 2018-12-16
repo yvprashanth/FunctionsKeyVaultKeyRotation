@@ -18,8 +18,17 @@ The below code gets a token from Azure Active Directory
         }
 ```
 
-# Step 3: 
-Once you've specified a schedule in time Function Run command, the below method creates a new key if the name of the key doesn't exist within that vault OR it creates a new version of an existing key
+# Step 3: Enable Managed Identity for your function
+On [Azure Portal](https://portal.azure.com) once you navigate to your functions, you can enable system assigned identity for your function
+![][./images/PortalFunctionsEnableMSI.png]
+
+# Step 4: Give Function Identity access to Key Vault
+Next we need to give the Azure Function's System Assigned Identity access to Key Vault. At the very least we need to give key permissions. 
+Select a Service Principal and type the Azure Function's name.
+
+# Step 5: Azure Function Code
+Now let's get back to our code.
+Once you've specified a schedule in time Function Run command, the below method creates a new key if the name of the key doesn't exist within that vault OR it creates a new version of an existing key. This example shows sets it to at 9:30 AM every Monday in January. For setting a different schedule you can look at examples [here](https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-timer#cron-examples)
 ```
         // This method creates a new Key if it doesn't exist or a new version of existing key if it already exists
         // You could replace the vault name with your Vault Name
@@ -41,3 +50,4 @@ Once you've specified a schedule in time Function Run command, the below method 
             }
         }
 ```
+
