@@ -29,6 +29,8 @@ namespace Prashanth.Function
             return parsedResultFromKeyVault.access_token;
         }
 
+        // This method creates a new Key if it doesn't exist or a new version of existing key if it already exists
+        // You could replace the vault name with your Vault Name
         private static async void CreateNewKeyAsync(string token, ILogger log)
         {
             try 
@@ -38,7 +40,7 @@ namespace Prashanth.Function
                 {
                     client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
                     var response = await client.PostAsync(
-                        "https://prashanthyofficialvault.vault.azure.net/keys/myFirstKey/create?api-version=7.0", 
+                        "https://<YourVaultName>.vault.azure.net/keys/<YourKeyName>/create?api-version=7.0", 
                         new StringContent(myJson, Encoding.UTF8, "application/json"));
                 }
             } 
