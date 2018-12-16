@@ -20,11 +20,12 @@ The below code gets a token from Azure Active Directory
 
 # Step 3: Enable Managed Identity for your function
 On [Azure Portal](https://portal.azure.com) once you navigate to your functions, you can enable system assigned identity for your function
-![][./images/PortalFunctionsEnableMSI.png]
+![](./images/PortalFunctionsEnableMSI.png)
 
 # Step 4: Give Function Identity access to Key Vault
 Next we need to give the Azure Function's System Assigned Identity access to Key Vault. At the very least we need to give key permissions. 
 Select a Service Principal and type the Azure Function's name.
+![](./images/AccessPolicyKeyVault.png)
 
 # Step 5: Azure Function Code
 Now let's get back to our code.
